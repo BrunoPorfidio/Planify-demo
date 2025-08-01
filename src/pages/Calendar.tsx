@@ -106,8 +106,8 @@ export default function CalendarPage() {
           <span className="hidden md:inline">Crear Tarea</span>
         </Button>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <Card className="lg:col-span-2 flex justify-center p-0">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <Card className="md:col-span-3 flex justify-center p-0">
           <Calendar
             mode="single"
             selected={selectedDate}
