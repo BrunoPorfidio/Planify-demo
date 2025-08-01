@@ -10,7 +10,7 @@ import CalendarPage from "./pages/Calendar";
 import Schedule from "./pages/Schedule";
 import Subjects from "./pages/Subjects";
 import { DataProvider } from "./contexts/DataContext";
-import PlaceholderPage from "./pages/PlaceholderPage";
+import StudyPlanner from "./pages/StudyPlanner";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +27,7 @@ const App = () => (
               <Route path="/schedule" element={<Schedule />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/subjects" element={<Subjects />} />
-              <Route path="/study-planner" element={<PlaceholderPage title="Plan de Estudio" />} />
+              <Route path="/study-planner" element={<StudyPlanner />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
