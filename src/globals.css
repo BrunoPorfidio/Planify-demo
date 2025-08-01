@@ -112,9 +112,9 @@
     @apply absolute bottom-1.5 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-primary;
   }
 
-  /* Custom styles for a larger, responsive calendar that FILLS its container */
+  /* Forcing the calendar to fill its container */
   .large-calendar.rdp {
-    @apply w-full h-full flex flex-col p-2 sm:p-4;
+    @apply w-full h-full flex flex-col p-4;
   }
   
   .large-calendar .rdp-month {
@@ -127,22 +127,15 @@
     flex-direction: column;
   }
   
-  .large-calendar .rdp-head {
-    display: flex;
-    justify-content: space-around;
-  }
-
   .large-calendar .rdp-body {
     @apply flex-1;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
   }
   
   .large-calendar .rdp-row {
     @apply flex-1;
     display: flex;
-    justify-content: space-around;
   }
   
   .large-calendar .rdp-cell {
@@ -153,14 +146,14 @@
   }
   
   .large-calendar .rdp-day {
-    @apply w-full h-full flex items-center justify-center text-base sm:text-xl lg:text-2xl;
+    @apply w-full h-full flex items-center justify-center text-xl rounded-md;
   }
 
   .large-calendar .rdp-caption_label {
-    @apply text-2xl sm:text-3xl lg:text-4xl font-bold py-4;
+    @apply text-3xl font-semibold py-4;
   }
   
   .large-calendar .rdp-head_cell {
-    @apply text-sm sm:text-base lg:text-lg p-2;
+    @apply text-xl p-2;
   }
 }
