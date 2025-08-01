@@ -106,7 +106,7 @@ export default function CalendarPage() {
           <span className="hidden md:inline">Crear Tarea</span>
         </Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="md:col-span-3 flex justify-center p-0">
           <Calendar
             mode="single"
