@@ -106,13 +106,13 @@ export default function CalendarPage() {
           <span className="hidden md:inline">Crear Tarea</span>
         </Button>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 flex-1">
-        <Card className="lg:col-span-3 flex flex-col p-0">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 flex-1 h-full">
+        <Card className="lg:col-span-3 flex flex-col p-0 h-full">
           <Calendar
             mode="single"
             selected={selectedDate}
             onSelect={(day) => setSelectedDate(day || new Date())}
-            className="large-calendar w-full flex-1"
+            className="large-calendar w-full flex-1 h-full"
             locale={es}
             modifiers={{ events: eventDays }}
             modifiersClassNames={{ events: 'has-event' }}
