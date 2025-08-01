@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Subject } from "@/lib/types";
-import { PlusCircle } from "lucide-react";
 import { useData } from "@/contexts/DataContext";
+import { AddScheduleEntryDialog } from "@/components/AddScheduleEntryDialog";
 
 const colorMap: { [key: string]: string } = {
   blue: "border-l-4 border-blue-500",
@@ -23,10 +22,7 @@ export default function Schedule() {
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-left">Horario Semanal</h1>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Agregar Clase
-        </Button>
+        <AddScheduleEntryDialog />
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">

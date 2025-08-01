@@ -6,10 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SharedLayout } from "./components/SharedLayout";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
-import PlaceholderPage from "./pages/PlaceholderPage";
+import CalendarPage from "./pages/Calendar";
 import Schedule from "./pages/Schedule";
 import Subjects from "./pages/Subjects";
 import { DataProvider } from "./contexts/DataContext";
+import PlaceholderPage from "./pages/PlaceholderPage";
 
 const queryClient = new QueryClient();
 
@@ -24,7 +25,7 @@ const App = () => (
             <Route element={<SharedLayout />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/schedule" element={<Schedule />} />
-              <Route path="/calendar" element={<PlaceholderPage title="Calendario" />} />
+              <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/subjects" element={<Subjects />} />
               <Route path="/study-planner" element={<PlaceholderPage title="Plan de Estudio" />} />
             </Route>

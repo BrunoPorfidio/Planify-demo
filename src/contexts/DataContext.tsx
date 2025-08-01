@@ -7,6 +7,8 @@ interface DataContextType {
   tasks: Task[];
   schedule: ScheduleEntry[];
   addSubject: (subject: Omit<Subject, 'id'>) => void;
+  addScheduleEntry: (entry: Omit<ScheduleEntry, 'id'>) => void;
+  updateTaskCompletion: (taskId: string, completed: boolean) => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -24,11 +26,29 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     setSubjects(prevSubjects => [...prevSubjects, newSubject]);
   };
 
+  const addScheduleEntry = (entryData: Omit<ScheduleEntry, 'id'>) => {
+    const newEntry: ScheduleEntry = {
+      id: `sch-${Date.now()}`,
+      ...entryData,
+    };
+    setSchedule(prevSchedule => [...prevSchedule, newEntry].sort((a, b) => a.startTime.localeCompare(b.startTime)));
+  };
+
+  const updateTaskCompletion = (taskId: string, completed: boolean) => {
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
+        task.id === taskId ? { ...task, completed } : task
+      )
+    );
+  };
+
   const value = {
     subjects,
     tasks,
     schedule,
     addSubject,
+    addScheduleEntry,
+    updateTaskCompletion,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
