@@ -62,8 +62,8 @@ export default function Subjects() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-left">Gestión de Materias</h1>
         <Button onClick={handleCreate}>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Crear Materia
+          <PlusCircle className="h-4 w-4 md:mr-2" />
+          <span className="hidden md:inline">Crear Materia</span>
         </Button>
       </div>
 

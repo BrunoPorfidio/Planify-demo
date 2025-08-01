@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { UploadCloud, FileText, X } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { UploadCloud, FileText, X, Download } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function StudyPlanner() {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [pdfName, setPdfName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isMobile = useIsMobile();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -60,23 +62,41 @@ export default function StudyPlanner() {
       {pdfUrl ? (
         <Card className="flex-1 flex flex-col">
           <CardHeader className="flex flex-row items-center justify-between">
-            <div className="flex items-center gap-2">
-              <FileText className="h-5 w-5" />
-              <CardTitle className="text-lg">{pdfName || 'Plan de Estudio'}</CardTitle>
+            <div className="flex items-center gap-2 min-w-0">
+              <FileText className="h-5 w-5 flex-shrink-0" />
+              <CardTitle className="text-lg truncate" title={pdfName || 'Plan de Estudio'}>
+                {pdfName || 'Plan de Estudio'}
+              </CardTitle>
             </div>
             <Button variant="ghost" size="icon" onClick={handleRemovePdf}>
               <X className="h-5 w-5" />
               <span className="sr-only">Eliminar PDF</span>
             </Button>
           </CardHeader>
-          <CardContent className="flex-1">
-            <iframe
-              src={pdfUrl}
-              title={pdfName || 'Plan de Estudio'}
-              width="100%"
-              height="100%"
-              className="border-0 rounded-md"
-            />
+          <CardContent className="flex-1 p-4 flex flex-col items-center justify-center">
+            {isMobile ? (
+              <div className="text-center space-y-4">
+                <FileText className="h-16 w-16 mx-auto text-muted-foreground" />
+                <p className="font-semibold px-4">{pdfName}</p>
+                <Button asChild>
+                  <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                    <Download className="mr-2 h-4 w-4" />
+                    Ver / Descargar PDF
+                  </a>
+                </Button>
+                <p className="text-xs text-muted-foreground">
+                  El PDF se abrirá en una nueva pestaña.
+                </p>
+              </div>
+            ) : (
+              <iframe
+                src={pdfUrl}
+                title={pdfName || 'Plan de Estudio'}
+                width="100%"
+                height="100%"
+                className="border-0 rounded-md"
+              />
+            )}
           </CardContent>
         </Card>
       ) : (

@@ -56,8 +56,8 @@ export default function Schedule() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-left">Horario Semanal</h1>
         <Button onClick={handleCreate}>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Agregar Clase
+          <PlusCircle className="h-4 w-4 md:mr-2" />
+          <span className="hidden md:inline">Agregar Clase</span>
         </Button>
       </div>
       
@@ -79,7 +79,7 @@ export default function Schedule() {
 
                   return (
                     <Card key={entry.id} className={subjectColorClass}>
-                      <CardContent className="p-4 text-left relative">
+                      <CardContent className="p-4 text-left relative group">
                         <p className="font-bold">{subject.name}</p>
                         <p className="text-sm text-muted-foreground">{subject.teacher}</p>
                         <p className="text-sm text-muted-foreground mt-2">{entry.location}</p>
