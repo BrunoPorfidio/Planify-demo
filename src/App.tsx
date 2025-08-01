@@ -9,26 +9,29 @@ import NotFound from "./pages/NotFound";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import Schedule from "./pages/Schedule";
 import Subjects from "./pages/Subjects";
+import { DataProvider } from "./contexts/DataContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<SharedLayout />}>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="/calendar" element={<PlaceholderPage title="Calendario" />} />
-            <Route path="/subjects" element={<Subjects />} />
-            <Route path="/study-planner" element={<PlaceholderPage title="Plan de Estudio" />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <DataProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route element={<SharedLayout />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/schedule" element={<Schedule />} />
+              <Route path="/calendar" element={<PlaceholderPage title="Calendario" />} />
+              <Route path="/subjects" element={<Subjects />} />
+              <Route path="/study-planner" element={<PlaceholderPage title="Plan de Estudio" />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </DataProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

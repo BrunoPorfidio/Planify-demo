@@ -1,20 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { schedule, subjects } from "@/lib/mock-data";
 import { Subject } from "@/lib/types";
 import { PlusCircle } from "lucide-react";
-
-const getSubject = (id: string): Subject | undefined => subjects.find(s => s.id === id);
+import { useData } from "@/contexts/DataContext";
 
 const colorMap: { [key: string]: string } = {
   blue: "border-l-4 border-blue-500",
   green: "border-l-4 border-green-500",
   purple: "border-l-4 border-purple-500",
+  red: "border-l-4 border-red-500",
+  yellow: "border-l-4 border-yellow-500",
+  gray: "border-l-4 border-gray-500",
 };
 
 const weekdays = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 
 export default function Schedule() {
+  const { schedule, subjects } = useData();
+  const getSubject = (id: string): Subject | undefined => subjects.find(s => s.id === id);
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">

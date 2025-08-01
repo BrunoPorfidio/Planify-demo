@@ -1,23 +1,25 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { tasks, schedule, subjects } from "@/lib/mock-data";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-
-const getSubjectName = (id: string) => subjects.find(s => s.id === id)?.name || 'Desconocido';
-
-const today = new Date();
-const dayOfWeek = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(today);
-const capitalizedDay = dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1);
-
-const upcomingTasks = tasks
-  .filter(task => !task.completed && task.dueDate >= today)
-  .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
-  .slice(0, 5);
-
-const todaySchedule = schedule.filter(entry => entry.day === capitalizedDay);
+import { useData } from "@/contexts/DataContext";
 
 export default function Dashboard() {
+  const { tasks, schedule, subjects } = useData();
+
+  const getSubjectName = (id: string) => subjects.find(s => s.id === id)?.name || 'Desconocido';
+
+  const today = new Date();
+  const dayOfWeek = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(today);
+  const capitalizedDay = dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1);
+
+  const upcomingTasks = tasks
+    .filter(task => !task.completed && task.dueDate >= today)
+    .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
+    .slice(0, 5);
+
+  const todaySchedule = schedule.filter(entry => entry.day === capitalizedDay);
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6 text-left">Dashboard</h1>
