@@ -8,6 +8,9 @@ interface DataContextType {
   schedule: ScheduleEntry[];
   addSubject: (subject: Omit<Subject, 'id'>) => void;
   addScheduleEntry: (entry: Omit<ScheduleEntry, 'id'>) => void;
+  addTask: (task: Omit<Task, 'id' | 'completed'>) => void;
+  updateTask: (taskId: string, taskData: Omit<Task, 'id' | 'completed'>) => void;
+  deleteTask: (taskId: string) => void;
   updateTaskCompletion: (taskId: string, completed: boolean) => void;
 }
 
@@ -34,6 +37,27 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     setSchedule(prevSchedule => [...prevSchedule, newEntry].sort((a, b) => a.startTime.localeCompare(b.startTime)));
   };
 
+  const addTask = (taskData: Omit<Task, 'id' | 'completed'>) => {
+    const newTask: Task = {
+      id: `task-${Date.now()}`,
+      completed: false,
+      ...taskData,
+    };
+    setTasks(prevTasks => [...prevTasks, newTask]);
+  };
+
+  const updateTask = (taskId: string, taskData: Omit<Task, 'id' | 'completed'>) => {
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
+        task.id === taskId ? { ...task, ...taskData } : task
+      )
+    );
+  };
+  
+  const deleteTask = (taskId: string) => {
+    setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+  };
+
   const updateTaskCompletion = (taskId: string, completed: boolean) => {
     setTasks(prevTasks =>
       prevTasks.map(task =>
@@ -48,6 +72,9 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     schedule,
     addSubject,
     addScheduleEntry,
+    addTask,
+    updateTask,
+    deleteTask,
     updateTaskCompletion,
   };
 

@@ -2,16 +2,31 @@ import React, { useState, useMemo } from 'react';
 import { isSameDay, format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Calendar } from '@/components/ui/calendar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useData } from '@/contexts/DataContext';
 import { Task } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import { Pencil, PlusCircle, Trash2 } from 'lucide-react';
+import { TaskFormDialog } from '@/components/TaskFormDialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { showSuccess } from '@/utils/toast';
 
-function TaskItem({ task, subjectName, onCheckedChange }: { task: Task, subjectName: string, onCheckedChange: (checked: boolean) => void }) {
+function TaskItem({ task, subjectName, onCheckedChange, onEdit, onDelete }: { task: Task, subjectName: string, onCheckedChange: (checked: boolean) => void, onEdit: () => void, onDelete: () => void }) {
   const badgeVariant = task.type === 'Parcial' ? 'destructive' : 'secondary';
   return (
-    <li className="flex items-center gap-4 p-2 rounded-md hover:bg-accent">
+    <li className="flex items-center gap-4 p-2 rounded-md hover:bg-accent group">
       <Checkbox
         id={`task-${task.id}`}
         checked={task.completed}
@@ -23,14 +38,40 @@ function TaskItem({ task, subjectName, onCheckedChange }: { task: Task, subjectN
         </label>
         <p className="text-sm text-muted-foreground">{subjectName}</p>
       </div>
-      <Badge variant={badgeVariant}>{task.type}</Badge>
+      <Badge variant={badgeVariant} className="hidden sm:inline-flex">{task.type}</Badge>
+      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <Button variant="ghost" size="icon" onClick={onEdit}>
+          <Pencil className="h-4 w-4" />
+        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Esta acción no se puede deshacer. Esto eliminará permanentemente la tarea.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+              <AlertDialogAction onClick={onDelete}>Eliminar</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </li>
   );
 }
 
 export default function CalendarPage() {
-  const { tasks, subjects, updateTaskCompletion } = useData();
+  const { tasks, subjects, updateTaskCompletion, deleteTask } = useData();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
 
   const getSubjectName = (id: string) => subjects.find(s => s.id === id)?.name || 'Desconocido';
 
@@ -41,9 +82,30 @@ export default function CalendarPage() {
 
   const eventDays = useMemo(() => tasks.map(task => task.dueDate), [tasks]);
 
+  const handleEdit = (task: Task) => {
+    setEditingTask(task);
+    setIsFormOpen(true);
+  };
+
+  const handleCreate = () => {
+    setEditingTask(undefined);
+    setIsFormOpen(true);
+  };
+
+  const handleDelete = (taskId: string) => {
+    deleteTask(taskId);
+    showSuccess("Tarea eliminada exitosamente.");
+  };
+
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-left">Calendario</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-left">Calendario</h1>
+        <Button onClick={handleCreate}>
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Crear Tarea
+        </Button>
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card className="lg:col-span-2 flex justify-center p-0">
           <Calendar
@@ -52,17 +114,8 @@ export default function CalendarPage() {
             onSelect={(day) => setSelectedDate(day || new Date())}
             className="p-0"
             locale={es}
-            components={{
-              DayContent: ({ date, ...props }) => {
-                const hasEvent = eventDays.some(eventDay => isSameDay(date, eventDay));
-                return (
-                  <div className="relative h-full w-full flex items-center justify-center">
-                    <span {...props} />
-                    {hasEvent && <div className="absolute bottom-1 h-1.5 w-1.5 rounded-full bg-blue-500" />}
-                  </div>
-                );
-              }
-            }}
+            modifiers={{ events: eventDays }}
+            modifiersClassNames={{ events: 'has-event' }}
           />
         </Card>
         <div className="flex flex-col gap-4">
@@ -79,6 +132,8 @@ export default function CalendarPage() {
                       task={task}
                       subjectName={getSubjectName(task.subjectId)}
                       onCheckedChange={(checked) => updateTaskCompletion(task.id, checked)}
+                      onEdit={() => handleEdit(task)}
+                      onDelete={() => handleDelete(task.id)}
                     />
                   ))}
                 </ul>
@@ -91,6 +146,12 @@ export default function CalendarPage() {
           </Card>
         </div>
       </div>
+      <TaskFormDialog
+        open={isFormOpen}
+        onOpenChange={setIsFormOpen}
+        task={editingTask}
+        defaultDate={selectedDate}
+      />
     </div>
   );
 }

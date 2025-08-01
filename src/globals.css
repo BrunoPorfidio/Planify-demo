@@ -99,3 +99,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .has-event {
+    @apply relative;
+  }
+  .has-event::after {
+    content: '';
+    @apply absolute bottom-1 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-blue-500;
+  }
+}
