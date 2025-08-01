@@ -98,21 +98,21 @@ export default function CalendarPage() {
   };
 
   return (
-    <>
-      <div className="flex justify-between items-center mb-6">
+    <div className="flex flex-col h-full">
+      <div className="flex justify-between items-center mb-6 flex-shrink-0">
         <h1 className="text-3xl font-bold text-left">Calendario</h1>
         <Button onClick={handleCreate}>
           <PlusCircle className="h-4 w-4 md:mr-2" />
           <span className="hidden md:inline">Crear Tarea</span>
         </Button>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <Card className="lg:col-span-3 flex justify-center items-start p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 flex-1">
+        <Card className="lg:col-span-3 flex p-0">
           <Calendar
             mode="single"
             selected={selectedDate}
             onSelect={(day) => setSelectedDate(day || new Date())}
-            className="large-calendar"
+            className="large-calendar w-full"
             locale={es}
             modifiers={{ events: eventDays }}
             modifiersClassNames={{ events: 'has-event' }}
@@ -152,6 +152,6 @@ export default function CalendarPage() {
         task={editingTask}
         defaultDate={selectedDate}
       />
-    </>
+    </div>
   );
 }

@@ -109,20 +109,32 @@
   }
   .has-event::after {
     content: '';
-    @apply absolute bottom-1 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-blue-500;
+    @apply absolute bottom-1.5 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-primary;
   }
 
-  /* Custom styles for a larger calendar */
-  .large-calendar {
-    @apply w-full;
+  /* Custom styles for a larger, responsive calendar */
+  .large-calendar.rdp {
+    @apply w-full h-full p-4;
+  }
+  .large-calendar .rdp-month {
+    @apply h-full flex flex-col;
+  }
+  .large-calendar .rdp-table {
+    @apply w-full flex-1 border-collapse;
+  }
+  .large-calendar .rdp-body {
+    @apply h-full;
+  }
+  .large-calendar .rdp-row {
+    @apply h-[calc(100%/6)]; /* Distribute height among 6 rows (max) */
   }
   .large-calendar .rdp-caption_label {
-    @apply text-2xl font-medium;
+    @apply text-3xl font-semibold py-4;
   }
   .large-calendar .rdp-head_cell {
-    @apply w-20 h-20 text-base;
+    @apply text-xl p-2;
   }
   .large-calendar .rdp-day {
-    @apply w-20 h-20 text-lg;
+    @apply text-xl;
   }
 }
