@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +10,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -28,9 +27,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlusCircle } from "lucide-react";
-import { Subject } from "@/lib/types";
+import { useData } from "@/contexts/DataContext";
 import { showSuccess } from "@/utils/toast";
+import { Subject } from "@/lib/types";
 
 const subjectSchema = z.object({
   name: z.string().min(3, { message: "El nombre debe tener al menos 3 caracteres." }),
@@ -41,42 +40,48 @@ const subjectSchema = z.object({
 
 type SubjectFormValues = z.infer<typeof subjectSchema>;
 
-interface AddSubjectDialogProps {
-  addSubject: (subject: Omit<Subject, 'id'>) => void;
+interface SubjectFormDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  subject?: Subject;
 }
 
-export function AddSubjectDialog({ addSubject }: AddSubjectDialogProps) {
-  const [open, setOpen] = useState(false);
+export function SubjectFormDialog({ open, onOpenChange, subject }: SubjectFormDialogProps) {
+  const { addSubject, updateSubject } = useData();
+  const isEditMode = !!subject;
+
   const form = useForm<SubjectFormValues>({
     resolver: zodResolver(subjectSchema),
-    defaultValues: {
-      name: "",
-      teacher: "",
-      credits: 1,
-      color: "blue",
-    },
   });
 
+  useEffect(() => {
+    if (open) {
+      form.reset(
+        isEditMode
+          ? { ...subject }
+          : { name: "", teacher: "", credits: 1, color: "blue" }
+      );
+    }
+  }, [open, subject, form, isEditMode]);
+
   const onSubmit = (data: SubjectFormValues) => {
-    addSubject(data);
-    showSuccess(`Materia "${data.name}" creada exitosamente.`);
-    form.reset();
-    setOpen(false);
+    if (isEditMode && subject) {
+      updateSubject(subject.id, data);
+      showSuccess(`Materia "${data.name}" actualizada exitosamente.`);
+    } else {
+      addSubject(data);
+      showSuccess(`Materia "${data.name}" creada exitosamente.`);
+    }
+    onOpenChange(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Crear Materia
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Crear Nueva Materia</DialogTitle>
+          <DialogTitle>{isEditMode ? "Editar Materia" : "Crear Nueva Materia"}</DialogTitle>
           <DialogDescription>
-            Completa los datos para agregar una nueva materia a tu lista.
+            {isEditMode ? "Modifica los detalles de la materia." : "Completa los datos para agregar una nueva materia a tu lista."}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -146,7 +151,7 @@ export function AddSubjectDialog({ addSubject }: AddSubjectDialogProps) {
               )}
             />
             <DialogFooter>
-              <Button type="submit">Guardar Materia</Button>
+              <Button type="submit">{isEditMode ? "Guardar Cambios" : "Crear Materia"}</Button>
             </DialogFooter>
           </form>
         </Form>

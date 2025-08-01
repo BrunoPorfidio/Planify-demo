@@ -1,9 +1,23 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2, PlusCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useData } from "@/contexts/DataContext";
-import { AddSubjectDialog } from "@/components/AddSubjectDialog";
 import { Button } from "@/components/ui/button";
+import { Subject } from "@/lib/types";
+import { SubjectFormDialog } from "@/components/SubjectFormDialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { showSuccess } from "@/utils/toast";
 
 const colorMap: { [key: string]: { bg: string, text: string, border: string } } = {
   blue: { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-300' },
@@ -23,15 +37,34 @@ const darkColorMap: { [key: string]: { bg: string, text: string, border: string 
     gray: { bg: 'bg-gray-800', text: 'text-gray-300', border: 'border-gray-600' },
 };
 
-
 export default function Subjects() {
-  const { subjects, addSubject } = useData();
+  const { subjects, deleteSubject } = useData();
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingSubject, setEditingSubject] = useState<Subject | undefined>(undefined);
+
+  const handleCreate = () => {
+    setEditingSubject(undefined);
+    setIsFormOpen(true);
+  };
+
+  const handleEdit = (subject: Subject) => {
+    setEditingSubject(subject);
+    setIsFormOpen(true);
+  };
+
+  const handleDelete = (subjectId: string) => {
+    deleteSubject(subjectId);
+    showSuccess("Materia eliminada exitosamente.");
+  };
 
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-left">Gestión de Materias</h1>
-        <AddSubjectDialog addSubject={addSubject} />
+        <Button onClick={handleCreate}>
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Crear Materia
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -63,17 +96,38 @@ export default function Subjects() {
                             <Eye className="mr-2 h-4 w-4" />
                             Detalles
                         </Button>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" onClick={() => handleEdit(subject)}>
                             <Pencil className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
-                            <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive">
+                                <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Esta acción no se puede deshacer. Esto eliminará permanentemente la materia. Las tareas y clases asociadas no se eliminarán.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDelete(subject.id)}>Eliminar</AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                     </CardFooter>
                 </Card>
             )
         })}
       </div>
+      <SubjectFormDialog
+        open={isFormOpen}
+        onOpenChange={setIsFormOpen}
+        subject={editingSubject}
+      />
     </div>
   );
 }

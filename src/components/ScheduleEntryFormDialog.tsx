@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +10,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -28,9 +27,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PlusCircle } from "lucide-react";
 import { useData } from "@/contexts/DataContext";
 import { showSuccess } from "@/utils/toast";
+import { ScheduleEntry } from "@/lib/types";
 
 const scheduleSchema = z.object({
   subjectId: z.string({ required_error: "Debes seleccionar una materia." }),
@@ -45,40 +44,49 @@ const scheduleSchema = z.object({
 
 type ScheduleFormValues = z.infer<typeof scheduleSchema>;
 
-export function AddScheduleEntryDialog() {
-  const [open, setOpen] = useState(false);
-  const { subjects, addScheduleEntry } = useData();
+interface ScheduleEntryFormDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  scheduleEntry?: ScheduleEntry;
+}
+
+export function ScheduleEntryFormDialog({ open, onOpenChange, scheduleEntry }: ScheduleEntryFormDialogProps) {
+  const { subjects, addScheduleEntry, updateScheduleEntry } = useData();
+  const isEditMode = !!scheduleEntry;
+
   const form = useForm<ScheduleFormValues>({
     resolver: zodResolver(scheduleSchema),
-    defaultValues: {
-      location: "",
-      startTime: "08:00",
-      endTime: "10:00",
-      day: "Lunes",
-    },
   });
 
+  useEffect(() => {
+    if (open) {
+      form.reset(
+        isEditMode
+          ? { ...scheduleEntry }
+          : { location: "", startTime: "08:00", endTime: "10:00", day: "Lunes" }
+      );
+    }
+  }, [open, scheduleEntry, form, isEditMode]);
+
   const onSubmit = (data: ScheduleFormValues) => {
-    addScheduleEntry(data);
-    const subjectName = subjects.find(s => s.id === data.subjectId)?.name || "la materia";
-    showSuccess(`Clase de ${subjectName} agregada al horario.`);
-    form.reset();
-    setOpen(false);
+    if (isEditMode && scheduleEntry) {
+      updateScheduleEntry(scheduleEntry.id, data);
+      showSuccess(`Clase actualizada exitosamente.`);
+    } else {
+      addScheduleEntry(data);
+      const subjectName = subjects.find(s => s.id === data.subjectId)?.name || "la materia";
+      showSuccess(`Clase de ${subjectName} agregada al horario.`);
+    }
+    onOpenChange(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Agregar Clase
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Agregar Clase al Horario</DialogTitle>
+          <DialogTitle>{isEditMode ? "Editar Clase" : "Agregar Clase al Horario"}</DialogTitle>
           <DialogDescription>
-            Completa los datos para agregar una nueva clase a tu horario semanal.
+            {isEditMode ? "Modifica los detalles de la clase." : "Completa los datos para agregar una nueva clase a tu horario semanal."}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -169,7 +177,7 @@ export function AddScheduleEntryDialog() {
               )}
             />
             <DialogFooter>
-              <Button type="submit">Guardar Clase</Button>
+              <Button type="submit">{isEditMode ? "Guardar Cambios" : "Guardar Clase"}</Button>
             </DialogFooter>
           </form>
         </Form>

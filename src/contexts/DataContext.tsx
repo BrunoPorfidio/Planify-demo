@@ -7,7 +7,11 @@ interface DataContextType {
   tasks: Task[];
   schedule: ScheduleEntry[];
   addSubject: (subject: Omit<Subject, 'id'>) => void;
+  updateSubject: (subjectId: string, subjectData: Omit<Subject, 'id'>) => void;
+  deleteSubject: (subjectId: string) => void;
   addScheduleEntry: (entry: Omit<ScheduleEntry, 'id'>) => void;
+  updateScheduleEntry: (entryId: string, entryData: Omit<ScheduleEntry, 'id'>) => void;
+  deleteScheduleEntry: (entryId: string) => void;
   addTask: (task: Omit<Task, 'id' | 'completed'>) => void;
   updateTask: (taskId: string, taskData: Omit<Task, 'id' | 'completed'>) => void;
   deleteTask: (taskId: string) => void;
@@ -29,12 +33,28 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     setSubjects(prevSubjects => [...prevSubjects, newSubject]);
   };
 
+  const updateSubject = (subjectId: string, subjectData: Omit<Subject, 'id'>) => {
+    setSubjects(prev => prev.map(s => s.id === subjectId ? { id: subjectId, ...subjectData } : s));
+  };
+
+  const deleteSubject = (subjectId: string) => {
+    setSubjects(prev => prev.filter(s => s.id !== subjectId));
+  };
+
   const addScheduleEntry = (entryData: Omit<ScheduleEntry, 'id'>) => {
     const newEntry: ScheduleEntry = {
       id: `sch-${Date.now()}`,
       ...entryData,
     };
     setSchedule(prevSchedule => [...prevSchedule, newEntry].sort((a, b) => a.startTime.localeCompare(b.startTime)));
+  };
+
+  const updateScheduleEntry = (entryId: string, entryData: Omit<ScheduleEntry, 'id'>) => {
+    setSchedule(prev => prev.map(e => e.id === entryId ? { id: entryId, ...entryData } : e).sort((a, b) => a.startTime.localeCompare(b.startTime)));
+  };
+
+  const deleteScheduleEntry = (entryId: string) => {
+    setSchedule(prev => prev.filter(e => e.id !== entryId));
   };
 
   const addTask = (taskData: Omit<Task, 'id' | 'completed'>) => {
@@ -71,7 +91,11 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     tasks,
     schedule,
     addSubject,
+    updateSubject,
+    deleteSubject,
     addScheduleEntry,
+    updateScheduleEntry,
+    deleteScheduleEntry,
     addTask,
     updateTask,
     deleteTask,
