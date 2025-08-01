@@ -102,7 +102,7 @@ export default function CalendarPage() {
       <div className="flex justify-between items-center mb-6 flex-shrink-0">
         <h1 className="text-3xl font-bold text-left">Calendario</h1>
         <Button onClick={handleCreate}>
-          <PlusCircle className="h-4 w-4 md:mr-2" />
+          <PlusCircle className="h-4 w-4 md:mr-22" />
           <span className="hidden md:inline">Crear Tarea</span>
         </Button>
       </div>
