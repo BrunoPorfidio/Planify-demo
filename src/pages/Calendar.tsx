@@ -107,12 +107,12 @@ export default function CalendarPage() {
         </Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <Card className="md:col-span-3 flex justify-center p-0">
+        <Card className="md:col-span-3 flex justify-center items-center">
           <Calendar
             mode="single"
             selected={selectedDate}
             onSelect={(day) => setSelectedDate(day || new Date())}
-            className="p-0"
+            className="large-calendar"
             locale={es}
             modifiers={{ events: eventDays }}
             modifiersClassNames={{ events: 'has-event' }}

@@ -111,4 +111,15 @@
     content: '';
     @apply absolute bottom-1 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-blue-500;
   }
+
+  /* Custom styles for a larger calendar */
+  .large-calendar .rdp-caption_label {
+    @apply text-xl font-medium;
+  }
+  .large-calendar .rdp-head_cell {
+    @apply w-16 h-16 text-sm font-normal;
+  }
+  .large-calendar .rdp-day {
+    @apply w-16 h-16 text-base;
+  }
 }
