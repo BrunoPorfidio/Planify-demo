@@ -115,7 +115,7 @@ export function AddScheduleEntryDialog() {
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecciona un día" />
-                      </Trigger>
+                      </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"].map(day => (
