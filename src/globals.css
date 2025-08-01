@@ -93,50 +93,6 @@
   }
 }
 
-/* === Estilos para expandir el calendario de shadcn/ui === */
-
-/* Hacemos que el contenedor del mes sea un flexbox en columna y crezca */
-.large-calendar .rdp-month {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-/* Forzamos a la tabla a ocupar todo el alto disponible */
-.large-calendar .rdp-table {
-  height: 100%;
-  width: 100%;
-  border-collapse: collapse;
-}
-
-/* El cuerpo de la tabla también debe ser un flexbox en columna para manejar las filas */
-.large-calendar .rdp-tbody {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-/* Distribuimos el espacio vertical equitativamente entre las filas */
-.large-calendar .rdp-row {
-  display: flex;
-  flex: 1;
-}
-
-/* Hacemos que cada celda sea un flexbox para centrar su contenido, y que ocupe el ancho equitativo */
-.large-calendar .rdp-cell {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Estilo para los días que tienen eventos (opcional pero recomendado) */
-.has-event {
-  background-color: hsl(var(--secondary));
-  border-radius: 9999px; /* o var(--radius) */
-  font-weight: bold;
-  color: hsl(var(--secondary-foreground));
-}
 
 @layer base {
   * {
