@@ -106,23 +106,17 @@ export default function CalendarPage() {
           <span className="hidden md:inline">Crear Tarea</span>
         </Button>
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 flex-1 h-full">
-        <Card className="lg:col-span-3 flex flex-col p-0 h-full min-h-[600px]">
-          <div className="flex-1 overflow-hidden">
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={(day) => setSelectedDate(day || new Date())}
-              className="w-full h-full !max-h-none"
-              style={{ flexGrow: 1, height: '100%' }}
-              locale={es}
-              modifiers={{ events: eventDays }}
-              modifiersClassNames={{ events: 'has-event' }}
-            />
-          </div>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 flex-1">
+        <Card className="lg:col-span-3 flex flex-col p-4">
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={(day) => setSelectedDate(day || new Date())}
+            locale={es}
+            modifiers={{ events: eventDays }}
+            modifiersClassNames={{ events: 'has-event' }}
+          />
         </Card>
-
         <div className="flex flex-col gap-4">
           <h2 className="text-xl font-semibold">
             Tareas para el {format(selectedDate, "PPP", { locale: es })}
@@ -151,7 +145,6 @@ export default function CalendarPage() {
           </Card>
         </div>
       </div>
-
       <TaskFormDialog
         open={isFormOpen}
         onOpenChange={setIsFormOpen}
