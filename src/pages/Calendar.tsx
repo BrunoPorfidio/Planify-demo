@@ -113,7 +113,7 @@ export default function CalendarPage() {
               mode="single"
               selected={selectedDate}
               onSelect={(day) => setSelectedDate(day || new Date())}
-              className="w-full h-full"
+              className="w-full h-full !max-h-none"
                style={{ flexGrow: 1, height: '100%', minHeight: '600px' }}
               locale={es}
               modifiers={{ events: eventDays }}
