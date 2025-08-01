@@ -113,13 +113,16 @@
   }
 
   /* Custom styles for a larger calendar */
+  .large-calendar {
+    @apply w-full;
+  }
   .large-calendar .rdp-caption_label {
-    @apply text-xl font-medium;
+    @apply text-2xl font-medium;
   }
   .large-calendar .rdp-head_cell {
-    @apply w-16 h-16 text-sm font-normal;
+    @apply w-20 h-20 text-base;
   }
   .large-calendar .rdp-day {
-    @apply w-16 h-16 text-base;
+    @apply w-20 h-20 text-lg;
   }
 }

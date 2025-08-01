@@ -98,7 +98,7 @@ export default function CalendarPage() {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-left">Calendario</h1>
         <Button onClick={handleCreate}>
@@ -106,8 +106,8 @@ export default function CalendarPage() {
           <span className="hidden md:inline">Crear Tarea</span>
         </Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <Card className="md:col-span-3 flex justify-center items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <Card className="lg:col-span-3 flex justify-center items-start p-4">
           <Calendar
             mode="single"
             selected={selectedDate}
@@ -152,6 +152,6 @@ export default function CalendarPage() {
         task={editingTask}
         defaultDate={selectedDate}
       />
-    </div>
+    </>
   );
 }
