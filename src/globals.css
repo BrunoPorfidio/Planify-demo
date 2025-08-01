@@ -93,6 +93,51 @@
   }
 }
 
+/* === ESTILOS PARA EXPANDIR EL CALENDARIO (MÉTODO DIRECTO) === */
+
+/* 1. Aseguramos que el contenedor principal del calendario
+      y su primer hijo (el div de react-day-picker) sean flexibles y altos. */
+.large-calendar, .large-calendar > div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+/* 2. Forzamos a todos los contenedores internos clave (mes, tabla, cuerpo de la tabla)
+      a ocupar toda la altura disponible que les da su padre. */
+.large-calendar .rdp-month,
+.large-calendar .rdp-table,
+.large-calendar .rdp-tbody {
+  height: 100%;
+}
+
+/* 3. Le decimos al cuerpo de la tabla que sus filas (tr) deben organizarse
+      como una columna de flexbox. Esto es crucial para que las filas se estiren. */
+.large-calendar .rdp-tbody {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 4. Hacemos que cada fila crezca para ocupar una porción igual del espacio vertical. */
+.large-calendar .rdp-row {
+  flex-grow: 1; /* O flex: 1; */
+}
+
+/* 5. Mantenemos el estilo para los eventos, que ya sabemos que funciona. */
+.has-event {
+  background-color: hsl(var(--secondary));
+  border-radius: 9999px;
+  font-weight: 500;
+  color: hsl(var(--secondary-foreground));
+}
+
+/* 6. (Opcional, pero mejora la estética) Centramos el número dentro de la celda. */
+.large-calendar .rdp-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 @layer base {
   * {
