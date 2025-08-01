@@ -107,19 +107,20 @@ export default function CalendarPage() {
         </Button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 flex-1 h-full">
-<Card className="lg:col-span-3 flex flex-col p-0 h-full min-h-[600px]">
-  <div className="flex-1 overflow-hidden">
-    <Calendar
-      mode="single"
-      selected={selectedDate}
-      onSelect={(day) => setSelectedDate(day || new Date())}
-      className="w-full h-full"
-      locale={es}
-      modifiers={{ events: eventDays }}
-      modifiersClassNames={{ events: 'has-event' }}
-    />
-  </div>
-</Card>
+        <Card className="lg:col-span-3 flex flex-col p-0 h-full min-h-[600px]">
+          <div className="flex-1 overflow-hidden">
+            <Calendar
+              mode="single"
+              selected={selectedDate}
+              onSelect={(day) => setSelectedDate(day || new Date())}
+              className="w-full h-full"
+               style={{ flexGrow: 1, height: '100%', minHeight: '600px' }}
+              locale={es}
+              modifiers={{ events: eventDays }}
+              modifiersClassNames={{ events: 'has-event' }}
+            />
+          </div>
+        </Card>
         <div className="flex flex-col gap-4">
           <h2 className="text-xl font-semibold">
             Tareas para el {format(selectedDate, "PPP", { locale: es })}
