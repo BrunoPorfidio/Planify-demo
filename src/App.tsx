@@ -7,6 +7,7 @@ import { SharedLayout } from "./components/SharedLayout";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import PlaceholderPage from "./pages/PlaceholderPage";
+import Schedule from "./pages/Schedule";
 
 const queryClient = new QueryClient();
 
@@ -19,7 +20,7 @@ const App = () => (
         <Routes>
           <Route element={<SharedLayout />}>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/schedule" element={<PlaceholderPage title="Horario" />} />
+            <Route path="/schedule" element={<Schedule />} />
             <Route path="/calendar" element={<PlaceholderPage title="Calendario" />} />
             <Route path="/subjects" element={<PlaceholderPage title="Materias" />} />
             <Route path="/study-planner" element={<PlaceholderPage title="Plan de Estudio" />} />
