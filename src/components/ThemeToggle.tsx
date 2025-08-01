@@ -1,5 +1,5 @@
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Moon, Sun, Palette } from "lucide-react";
+import { useTheme } from "@/components/ThemeProvider";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -7,6 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 export function ThemeToggle() {
@@ -30,6 +31,15 @@ export function ThemeToggle() {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
           Sistema
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => setTheme("theme-mint")}>
+          <Palette className="mr-2 h-4 w-4" />
+          <span>Pastel Menta</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("theme-lavender")}>
+          <Palette className="mr-2 h-4 w-4" />
+          <span>Pastel Lavanda</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
