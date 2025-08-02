@@ -22,6 +22,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { showSuccess } from '@/utils/toast';
+import { NotesSection } from '@/components/NotesSection';
 
 function TaskItem({ task, subjectName, onCheckedChange, onEdit, onDelete }: { task: Task, subjectName: string, onCheckedChange: (checked: boolean) => void, onEdit: () => void, onDelete: () => void }) {
   const badgeVariant = task.type === 'Parcial' ? 'destructive' : 'secondary';
@@ -107,7 +108,7 @@ export default function CalendarPage() {
         </Button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 flex-1">
-        <Card className="lg:col-span-3 flex flex-col p-4 min-h-[65vh]">
+        <Card className="lg:col-span-3 flex flex-col p-4">
           <Calendar
             mode="single"
             selected={selectedDate}
@@ -128,6 +129,7 @@ export default function CalendarPage() {
               caption_label: "text-2xl font-medium",
             }}
           />
+          <NotesSection selectedDate={selectedDate} />
         </Card>
         <div className="flex flex-col gap-4">
           <h2 className="text-xl font-semibold">

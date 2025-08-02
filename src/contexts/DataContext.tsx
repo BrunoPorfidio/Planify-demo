@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Subject, Task, ScheduleEntry } from '@/lib/types';
+import { Subject, Task, ScheduleEntry, Note } from '@/lib/types';
 import { subjects as mockSubjects, tasks as mockTasks, schedule as mockSchedule } from '@/lib/mock-data';
 
 interface DataContextType {
   subjects: Subject[];
   tasks: Task[];
   schedule: ScheduleEntry[];
+  notes: Note[];
   addSubject: (subject: Omit<Subject, 'id'>) => void;
   updateSubject: (subjectId: string, subjectData: Omit<Subject, 'id'>) => void;
   deleteSubject: (subjectId: string) => void;
@@ -16,6 +17,7 @@ interface DataContextType {
   updateTask: (taskId: string, taskData: Omit<Task, 'id' | 'completed'>) => void;
   deleteTask: (taskId: string) => void;
   updateTaskCompletion: (taskId: string, completed: boolean) => void;
+  updateNote: (date: string, content: string) => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -24,6 +26,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
   const [subjects, setSubjects] = useState<Subject[]>(mockSubjects);
   const [tasks, setTasks] = useState<Task[]>(mockTasks);
   const [schedule, setSchedule] = useState<ScheduleEntry[]>(mockSchedule);
+  const [notes, setNotes] = useState<Note[]>([]);
 
   const addSubject = (subjectData: Omit<Subject, 'id'>) => {
     const newSubject: Subject = {
@@ -86,10 +89,29 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
+  const updateNote = (date: string, content: string) => {
+    setNotes(prevNotes => {
+      const existingNoteIndex = prevNotes.findIndex(n => n.date === date);
+      const newNotes = [...prevNotes];
+
+      if (existingNoteIndex > -1) {
+        if (content) {
+          newNotes[existingNoteIndex] = { ...newNotes[existingNoteIndex], content };
+        } else {
+          newNotes.splice(existingNoteIndex, 1);
+        }
+      } else if (content) {
+        newNotes.push({ date, content });
+      }
+      return newNotes;
+    });
+  };
+
   const value = {
     subjects,
     tasks,
     schedule,
+    notes,
     addSubject,
     updateSubject,
     deleteSubject,
@@ -100,6 +122,7 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
     updateTask,
     deleteTask,
     updateTaskCompletion,
+    updateNote,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

@@ -23,3 +23,8 @@ export interface ScheduleEntry {
   subjectId: string;
   location: string;
 }
+
+export interface Note {
+  date: string; // YYYY-MM-DD
+  content: string;
+}
