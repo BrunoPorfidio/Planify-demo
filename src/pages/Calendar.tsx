@@ -121,9 +121,9 @@ export default function CalendarPage() {
               month: "space-y-4",
               table: "w-full border-collapse space-y-1",
               head_row: "flex",
-              head_cell: "w-full font-normal text-lg text-muted-foreground",
+              head_cell: "flex-1 font-normal text-lg text-muted-foreground text-center",
               row: "flex w-full mt-2",
-              cell: "h-full w-full text-center text-lg p-0 py-3",
+              cell: "flex-1 h-full text-center text-lg p-0 py-3",
               day: "h-full w-full p-0 text-lg flex items-center justify-center",
               caption_label: "text-2xl font-medium",
             }}
