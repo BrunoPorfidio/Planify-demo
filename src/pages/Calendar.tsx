@@ -107,7 +107,7 @@ export default function CalendarPage() {
         </Button>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 flex-1">
-        <Card className="lg:col-span-3 flex flex-col p-4">
+        <Card className="lg:col-span-3 flex flex-col p-4 min-h-[65vh]">
           <Calendar
             mode="single"
             selected={selectedDate}
@@ -115,6 +115,17 @@ export default function CalendarPage() {
             locale={es}
             modifiers={{ events: eventDays }}
             modifiersClassNames={{ events: 'has-event' }}
+            className="flex-1"
+            classNames={{
+              months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 flex-1",
+              month: "space-y-4 flex flex-col flex-1",
+              table: "w-full border-collapse space-y-1 flex-1 flex flex-col",
+              head_row: "flex",
+              row: "flex w-full mt-2 flex-1",
+              cell: "h-full w-full text-center text-lg p-0",
+              day: "h-full w-full p-0 text-lg",
+              caption_label: "text-2xl font-medium",
+            }}
           />
         </Card>
         <div className="flex flex-col gap-4">
