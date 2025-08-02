@@ -116,16 +116,15 @@ export default function CalendarPage() {
             locale={es}
             modifiers={{ events: eventDays }}
             modifiersClassNames={{ events: 'has-event' }}
-            className="flex-1"
             classNames={{
-              months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 flex-1",
-              month: "space-y-4 flex flex-col flex-1",
-              table: "w-full border-collapse space-y-1 flex-1 flex flex-col",
+              months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
+              month: "space-y-4",
+              table: "w-full border-collapse space-y-1",
               head_row: "flex",
               head_cell: "w-full font-normal text-lg text-muted-foreground",
-              row: "flex w-full mt-4 flex-1",
-              cell: "h-full w-full text-center text-lg p-0",
-              day: "h-full w-full p-0 text-lg",
+              row: "flex w-full mt-2",
+              cell: "h-full w-full text-center text-lg p-0 py-3",
+              day: "h-full w-full p-0 text-lg flex items-center justify-center",
               caption_label: "text-2xl font-medium",
             }}
           />
