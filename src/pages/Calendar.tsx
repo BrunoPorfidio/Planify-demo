@@ -109,14 +109,16 @@ export default function CalendarPage() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 flex-1">
         <Card className="lg:col-span-3 flex flex-col p-4">
-          <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={(day) => setSelectedDate(day || new Date())}
-            locale={es}
-            modifiers={{ events: eventDays }}
-            modifiersClassNames={{ events: 'has-event' }}
-          />
+          <div className="w-full max-w-2xl mx-auto">
+            <Calendar
+              mode="single"
+              selected={selectedDate}
+              onSelect={(day) => setSelectedDate(day || new Date())}
+              locale={es}
+              modifiers={{ events: eventDays }}
+              modifiersClassNames={{ events: 'has-event' }}
+            />
+          </div>
           <NotesSection selectedDate={selectedDate} />
         </Card>
         <div className="flex flex-col gap-4">
