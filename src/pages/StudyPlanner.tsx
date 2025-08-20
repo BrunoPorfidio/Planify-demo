@@ -1,14 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { UploadCloud, FileText, X, Download } from 'lucide-react';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { UploadCloud, FileText, X } from 'lucide-react';
 
 export default function StudyPlanner() {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [pdfName, setPdfName] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const isMobile = useIsMobile();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -73,30 +71,14 @@ export default function StudyPlanner() {
               <span className="sr-only">Eliminar PDF</span>
             </Button>
           </CardHeader>
-          <CardContent className="flex-1 p-4 flex flex-col items-center justify-center">
-            {isMobile ? (
-              <div className="text-center space-y-4">
-                <FileText className="h-16 w-16 mx-auto text-muted-foreground" />
-                <p className="font-semibold px-4">{pdfName}</p>
-                <Button asChild>
-                  <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
-                    <Download className="mr-2 h-4 w-4" />
-                    Ver / Descargar PDF
-                  </a>
-                </Button>
-                <p className="text-xs text-muted-foreground">
-                  El PDF se abrirá en una nueva pestaña.
-                </p>
-              </div>
-            ) : (
-              <iframe
-                src={pdfUrl}
-                title={pdfName || 'Plan de Estudio'}
-                width="100%"
-                height="100%"
-                className="border-0 rounded-md"
-              />
-            )}
+          <CardContent className="flex-1 p-0 md:p-4">
+            <iframe
+              src={pdfUrl}
+              title={pdfName || 'Plan de Estudio'}
+              width="100%"
+              height="100%"
+              className="border-0 rounded-md"
+            />
           </CardContent>
         </Card>
       ) : (
